@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDFik - Your Free Online PDF Toolkit</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  <!-- Google Translate API -->
+  <link rel="icon" type="image/png" href="assets/main_logo.png">
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,bn,hi,es,fr,de,ja',
+      layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL,
+      autoDisplay: false
+    }, 'google_translate_element');
+    
+    // Remove the Google branding
+    var googleBranding = document.querySelector('.goog-logo-link');
+    if (googleBranding) {
+      googleBranding.style.display = 'none';
+    }
+    
+    var googleText = document.querySelector('.goog-te-gadget');
+    if (googleText) {
+      googleText.style.color = 'transparent';
+    }
+  }
+  
+  function changeLanguage(lang) {
+    const selectField = document.querySelector('.goog-te-combo');
+    if (selectField) {
+      selectField.value = lang;
+      selectField.dispatchEvent(new Event('change'));
+      
+      // Show notification
+      const langNames = {
+        'en': 'English',
+        'bn': 'Bengali',
+        'hi': 'Hindi',
+        'es': 'Spanish',
+        'fr': 'French',
+        'de': 'German',
+        'ja': 'Japanese'
+      };
+      
+      showToast(`Language changed to ${langNames[lang]}`);
+      
+      // Save language preference
+      localStorage.setItem('preferredLanguage', lang);
+    }
+  }
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</head>
+<body>
+<!-- Add this right after the opening <body> tag -->
+<div id="google_translate_element" style="position: absolute; top: 100px; right: 20px; z-index: 999;"></div>
+  <header>
+    <!-- Replace the current logo and text-logo elements with this -->
+<div class="logo-container">
+  <a href="index.html" class="logo">
+    <img src="assets/main_logo.png" alt="PDFik Logo" onerror="this.onerror=null;this.src='https://placehold.co/200x60/ffffff/8b0f0f?text=PDFik';">
+  </a>
+  <a href="index.html" class="text-logo">
+    <img src="assets/text_logo.png" alt="PDFik Text Logo" onerror="this.onerror=null;this.src='https://placehold.co/200x60/ffffff/8b0f0f?text=PDFik';">
+  </a>
+</div>
+    <nav>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#" id="aboutLink">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li class="language-menu">
+          <b>Language</b> &#9662;
+          <ul class="language-list">
+            <li onclick="changeLanguage('en')">English</li>
+            <li onclick="changeLanguage('bn')">Bengali</li>
+            <li onclick="changeLanguage('hi')">Hindi</li>
+            <li onclick="changeLanguage('es')">Spanish</li>
+            <li onclick="changeLanguage('fr')">French</li>
+            <li onclick="changeLanguage('de')">German</li>
+            <li onclick="changeLanguage('ja')">Japanese</li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+   <!-- Google Translate Element -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="fade-in-up">Transform Your PDFs With Ease</h1>
+      <p class="fade-in-up" style="animation-delay: 0.3s;">Merge, Split, Convert, and More — All Online, No Downloads Needed.</p>
+      <a href="#features" class="cta-button fade-in-up" style="animation-delay: 0.6s;">Get Started</a>
+    </div>
+  </section>
+
+  <section class="features-section" id="features">
+    <h2>All The Tools You Need</h2>
+    <p class="section-subtitle">PDFik is your one-stop solution for handling PDF files with unparalleled ease and efficiency. 20MB Optimal) </p>
+    <div class="features-container">
+      <div class="feature-card">
+        <div class="icon-wrapper"><i class="fas fa-object-group"></i></div>
+        <h3>Merge PDFs</h3>
+        <p>Combine multiple PDF files into one seamless document.</p>
+        <div class="feature-action">
+          <input type="file" id="mergeInput" multiple accept="application/pdf" class="file-input">
+          <label for="mergeInput" class="upload-button">Select Files</label>
+          <button id="mergeBtn">Merge Now</button>
+          <div class="progress-container" id="mergeProgress">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+        <div id="fileListContainer" class="file-list-container"></div>
+      </div>
+      <div class="feature-card">
+        <div class="icon-wrapper"><i class="fas fa-cut"></i></div>
+        <h3>Split PDFs</h3>
+        <p>Extract pages or split PDFs into multiple files easily.</p>
+        <div class="feature-action">
+          <input type="file" id="splitInput" accept="application/pdf" class="file-input">
+          <label for="splitInput" class="upload-button">Select File</label>
+          <button id="splitBtn">Split Now</button>
+          <div class="progress-container" id="splitProgress">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+        <div id="splitFileListContainer" class="file-list-container"></div>
+      </div>
+<div class="feature-card">
+  <div class="icon-wrapper"><i class="fas fa-exchange-alt"></i></div>
+  <h3>Convert Files</h3>
+  <p>Convert between PDF, Word, Excel, and Images in both directions.</p>
+  <div class="feature-action">
+    <input type="file" id="convertInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.bmp,.tiff,.webp" class="file-input">
+    <label for="convertInput" class="upload-button">Select Files</label>
+    
+    <div class="convert-options" style="margin-top: 15px; display: none;" id="convertOptions">
+      <label>Convert From:</label>
+      <select id="convertFrom" class="text-input">
+        <option value="">Detecting...</option>
+      </select>
+      
+      <label style="margin-top: 10px;">Convert To:</label>
+      <select id="convertTo" class="text-input">
+        <option value="pdf">PDF Document</option>
+        <option value="word">Word Document (.docx)</option>
+        <option value="excel">Excel Spreadsheet (.xlsx)</option>
+        <option value="image">Images</option>
+      </select>
+      
+      <div id="imageOptions" style="display: none; margin-top: 10px;">
+        <label>Image Format:</label>
+        <select id="imageFormat" class="text-input">
+          <option value="png">PNG</option>
+          <option value="jpg">JPG</option>
+        </select>
+        
+        <label style="display: block; margin-top: 10px;">DPI Quality:</label>
+        <select id="imageQuality" class="text-input">
+          <option value="72">Low (72 DPI)</option>
+          <option value="150" selected>Medium (150 DPI)</option>
+          <option value="300">High (300 DPI)</option>
+        </select>
+      </div>
+    </div>
+    
+    <button id="convertBtn" style="margin-top: 15px; display: none;">Convert Now</button>
+    
+    <div class="progress-container" id="convertProgress">
+      <div class="progress-bar"></div>
+    </div>
+    
+    <div id="convertStatus" style="margin-top: 15px; display: none;">
+      <div class="convert-progress-text">Preparing conversion...</div>
+      <div class="convert-file-progress">
+        <div class="convert-file-name">No file</div>
+        <div class="convert-file-percent">0%</div>
+      </div>
+      <div class="convert-overall-progress">
+        <div class="convert-progress-container">
+          <div class="progress-bar-fill" style="width: 0%"></div>
+        </div>
+        <div class="convert-overall-percent">0%</div>
+      </div>
+    </div>
+  </div>
+  <div id="convertFileListContainer" class="file-list-container"></div>
+  
+  <div id="convertResults" class="analysis-results" style="display: none;">
+    <div class="analysis-header">
+      <h4>Conversion Results</h4>
+      <span class="close-analysis" id="closeConvertResults">&times;</span>
+    </div>
+    <div class="analysis-content" id="convertResultsContent"></div>
+  </div>
+</div>
+<div id="toast" style="display:none; position:fixed; bottom:20px; right:20px; background:#333; color:#fff; padding:10px 20px; border-radius:5px; z-index:1000;">
+  PDF → Image is on a short break. Will be back soon!
+</div>
+      <div class="feature-card">
+        <div class="icon-wrapper"><i class="fas fa-i-cursor"></i></div>
+        <h3>Rename PDFs</h3>
+        <p>Rename your PDF file easily and quickly.</p>
+        <div class="feature-action">
+          <input type="file" id="renameInput" accept="application/pdf" class="file-input">
+          <label for="renameInput" class="upload-button">Select File</label>
+          <input type="text" id="newNameInput" placeholder="Enter new file name" class="text-input">
+          <button id="renameBtn">Rename Now</button>
+          <div class="progress-container" id="renameProgress">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+        <div id="renameFileListContainer" class="file-list-container"></div>
+      </div>
+      <div class="feature-card">
+        <div class="icon-wrapper"><i class="fas fa-volume-up"></i></div>
+        <h3>PDF Voice Reader</h3>
+        <p>Transfer your PDF to audio for better productivity.</p>
+        <div class="feature-action">
+          <input type="file" id="voiceReaderInput" accept="application/pdf" class="file-input">
+          <label for="voiceReaderInput" class="upload-button">Select File</label>
+          <button id="voiceReaderBtn">Listen Now</button>
+          <div class="progress-container" id="voiceProgress">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+        <div id="voiceReaderFileListContainer" class="file-list-container"></div>
+      </div>
+      <div class="feature-card">
+        <div class="icon-wrapper"><i class="fas fa-font"></i></div>
+        <h3>Extract Text</h3>
+        <p>Extract text from the PDF for better usage.</p>
+        <div class="feature-action">
+          <input type="file" id="extractInput" accept="application/pdf" class="file-input">
+          <label for="extractInput" class="upload-button">Select File</label>
+          <button id="extractBtn">Extract Now</button>
+          <div class="progress-container" id="extractProgress">
+            <div class="progress-bar"></div>
+          </div>
+        </div>
+        <div id="extractFileListContainer" class="file-list-container"></div>
+      </div>
+      <div class="feature-card">
+  <div class="icon-wrapper"><i class="fas fa-lock"></i></div>
+  <h3>Lock PDFs</h3>
+  <p>Lock your PDF with a unique password.</p>
+  <div class="feature-action">
+    <input type="file" id="lockInput" accept="application/pdf" class="file-input">
+    <label for="lockInput" class="upload-button">Select File</label>
+    <input type="password" id="lockPassword" placeholder="Enter password" class="text-input">
+    <button id="lockBtn">Lock Now</button>
+    <div class="progress-container" id="lockProgress">
+      <div class="progress-bar"></div>
+    </div>
+  </div>
+  <div id="lockFileListContainer" class="file-list-container"></div>
+</div>
+
+<div class="feature-card">
+  <div class="icon-wrapper"><i class="fas fa-unlock"></i></div>
+  <h3>Unlock PDFs</h3>
+  <p>Unlock your PDF with password.</p>
+  <div class="feature-action">
+    <input type="file" id="unlockInput" accept="application/pdf" class="file-input">
+    <label for="unlockInput" class="upload-button">Select File</label>
+    <input type="password" id="unlockPassword" placeholder="Enter password" class="text-input">
+    <button id="unlockBtn">Unlock Now</button>
+    <div class="progress-container" id="unlockProgress">
+      <div class="progress-bar"></div>
+    </div>
+  </div>
+  <div id="unlockFileListContainer" class="file-list-container"></div>
+</div>
+<div class="feature-card">
+  <div class="icon-wrapper"><i class="fas fa-search"></i></div>
+  <h3>Analyze PDFs</h3>
+  <p>Get instant insights and information about your PDF document.</p>
+  <div class="feature-action">
+    <input type="file" id="analyzeInput" accept="application/pdf" class="file-input">
+    <label for="analyzeInput" class="upload-button">Select File</label>
+    <button id="analyzeBtn">Analyze Now</button>
+    <div class="progress-container" id="analyzeProgress">
+      <div class="progress-bar"></div>
+    </div>
+  </div>
+  <div id="analyzeFileListContainer" class="file-list-container"></div>
+  <div id="analysisResults" class="analysis-results">
+    <div class="analysis-header">
+    </div>
+    <div class="analysis-content"></div>
+  </div>
+</div>
+      <div class="feature-card">
+  <div class="icon-wrapper"><i class="fas fa-folder"></i></div>
+  <h3>Organize PDFs</h3>
+  <p>Reorder or delete pages from your PDF.</p>
+  <div class="feature-action">
+    <input type="file" id="organizeInput" accept="application/pdf" class="file-input">
+    <label for="organizeInput" class="upload-button">Select File</label>
+    
+    <div id="organizeControls" style="display: none; margin-top: 15px;">
+      <div id="pageInfo" class="page-info">
+        <p>PDF loaded with <span id="pageCount">0</span> pages</p>
+      </div>
+      
+      <div class="organize-actions">
+        <button id="reorderBtn" class="organize-btn">Reorder Pages</button>
+        <button id="deleteBtn" class="organize-btn">Delete Pages</button>
+      </div>
+      
+      <div id="reorderInterface" style="display: none;">
+        <div class="organize-header">
+          <h4>Reorder PDF Pages</h4>
+          <span class="close-organize" id="closeReorder">&times;</span>
+        </div>
+        <p>Drag pages to reorder them:</p>
+        <ul id="pageList" class="page-list"></ul>
+        <button id="applyReorder" class="organize-action-btn">Apply Reorder</button>
+      </div>
+      
+      <div id="deleteInterface" style="display: none;">
+        <div class="organize-header">
+          <h4>Delete PDF Pages</h4>
+          <span class="close-organize" id="closeDelete">&times;</span>
+        </div>
+        <p>Select pages to delete:</p>
+        <div id="pageCheckboxes" class="page-checkboxes"></div>
+        <button id="applyDelete" class="organize-action-btn">Apply Deletion</button>
+      </div>
+    </div>
+    
+    <div class="progress-container" id="organizeProgress">
+      <div class="progress-bar"></div>
+    </div>
+  </div>
+  <div id="organizeFileListContainer" class="file-list-container"></div>
+</div>
+      <div class="feature-card">
+  <div class="icon-wrapper"><i class="fas fa-code-compare"></i></div>
+  <h3>Compare PDFs</h3>
+  <p>Compare two PDFs for differences in content, pages, or metadata.</p>
+  <div class="feature-action">
+    <div class="compare-inputs">
+      <div class="compare-file">
+        <input type="file" id="compareInput1" accept="application/pdf" class="file-input">
+        <label for="compareInput1" class="upload-button">Select PDF 1</label>
+        <div id="compareFileList1" class="file-list-container"></div>
+      </div>
+      <div class="compare-file">
+        <input type="file" id="compareInput2" accept="application/pdf" class="file-input">
+        <label for="compareInput2" class="upload-button">Select PDF 2</label>
+        <div id="compareFileList2" class="file-list-container"></div>
+      </div>
+    </div>
+    
+    <div class="compare-options" style="margin-top: 15px;">
+      <label>Comparison Type:</label>
+      <select id="compareType" class="text-input">
+        <option value="basic">Basic (Page Count)</option>
+        <option value="detailed">Detailed (Content)</option>
+        <option value="metadata">Metadata</option>
+      </select>
+    </div>
+    
+    <button id="compareBtn" style="margin-top: 15px; width: 100%;">Compare Now</button>
+    
+    <div class="progress-container" id="compareProgress">
+      <div class="progress-bar"></div>
+    </div>
+  </div>
+  
+  <div id="compareResults" class="analysis-results" style="display: none;">
+    <div class="analysis-header">
+      <h4>PDF Comparison Results</h4>
+      <span class="close-analysis" id="closeCompare">&times;</span>
+    </div>
+    <div class="analysis-content" id="compareContent"></div>
+  </div>
+</div>
+      <div class="feature-card">
+  <div class="icon-wrapper"><i class="fas fa-sync"></i></div>
+  <h3>Rotate PDFs</h3>
+  <p>Rotate your PDF according to angles.</p>
+  <div class="feature-action">
+    <input type="file" id="rotateInput" accept="application/pdf" class="file-input">
+    <label for="rotateInput" class="upload-button">Select File</label>
+    
+    <div class="rotation-options" style="margin-top: 10px;">
+      <label>Rotation Type:</label>
+      <select id="rotationType" class="text-input">
+        <option value="all">Rotate All Pages</option>
+        <option value="specific">Rotate Specific Pages</option>
+      </select>
+      
+      <div id="allRotationOptions" style="margin-top: 10px;">
+        <label>Rotation Angle:</label>
+        <select id="rotationAngle" class="text-input">
+          <option value="90">90° Clockwise</option>
+          <option value="180">180°</option>
+          <option value="270">270°</option>
+        </select>
+      </div>
+      
+      <div id="specificRotationOptions" style="display: none; margin-top: 10px;">
+        <div class="page-selection-header">
+          <h4>Select Pages to Rotate</h4>
+          <button type="button" id="selectAllPages" class="select-all-btn">Select All</button>
+        </div>
+        
+        <div class="angle-selection">
+          <label>Rotation Angle for Selected Pages:</label>
+          <select id="selectedPagesAngle" class="text-input">
+            <option value="90">90° Clockwise</option>
+            <option value="180">180°</option>
+            <option value="270">270°</option>
+          </select>
+        </div>
+        
+        <div id="pageSelectionGrid" class="page-selection-grid">
+          <!-- Pages will be dynamically added here -->
+        </div>
+      </div>
+    </div>
+    
+    <button id="rotateBtn" style="margin-top: 15px;">Rotate Now</button>
+    
+    <div class="progress-container" id="rotateProgress">
+      <div class="progress-bar"></div>
+    </div>
+  </div>
+  <div id="rotateFileListContainer" class="file-list-container"></div>
+</div>
+      <!-- Replace the existing OCR Extract PDFs feature card in index.html -->
+<div class="feature-card">
+  <div class="icon-wrapper"><i class="fas fa-file-alt"></i></div>
+  <h3>OCR Extract PDFs</h3>
+  <p>Extract texts from scanned or handwritten PDFs. (Beta version)</p>
+  <div class="feature-action">
+    <input type="file" id="ocrExtractInput" accept="application/pdf" class="file-input">
+    <label for="ocrExtractInput" class="upload-button">Select File</label>
+    <button id="ocrExtractBtn">Extract Now</button>
+    <div class="progress-container" id="ocrExtractProgress">
+      <div class="progress-bar"></div>
+    </div>
+  </div>
+  <div id="ocrExtractFileListContainer" class="file-list-container"></div>
+</div>
+      <!-- Replace the existing Crop PDFs feature card in index.html -->
+<div class="feature-card">
+  <div class="icon-wrapper"><i class="fas fa-crop"></i></div>
+  <h3>Crop PDFs</h3>
+  <p>Crop PDFs according to presets or custom settings. (Beta version)</p>
+  <div class="feature-action">
+    <input type="file" id="cropInput" accept="application/pdf" class="file-input">
+    <label for="cropInput" class="upload-button">Select File</label>
+    
+    <div class="crop-options" style="margin-top: 15px;">
+      <div style="margin-bottom: 10px;">
+        <label>Crop Method:</label>
+        <select id="cropTo" class="text-input">
+          <option value="margin">Margin Cropping</option>
+          <option value="content">Content Detection (Experimental)</option>
+        </select>
+      </div>
+      
+      <div style="margin-bottom: 10px;">
+        <label>Margin Preset:</label>
+        <select id="cropPreset" class="text-input">
+          <option value="minimal">Minimal Margins</option>
+          <option value="small" selected>Small Margins</option>
+          <option value="medium">Medium Margins</option>
+          <option value="large">Large Margins</option>
+          <option value="generous">Generous Margins</option>
+          <option value="custom">Custom Margins</option>
+        </select>
+      </div>
+      
+      <div id="customMarginsContainer" style="display: none; margin-bottom: 10px;">
+        <label>Custom Margins (L,T,R,B):</label>
+        <input type="text" id="customMargins" class="text-input" placeholder="30,30,30,30">
+        <small style="display: block; color: #666; margin-top: 5px;">Format: left,top,right,bottom (in pixels)</small>
+      </div>
+      
+      <div style="margin-bottom: 10px;">
+        <label>Page Range:</label>
+        <select id="pageRange" class="text-input">
+          <option value="all" selected>All Pages</option>
+          <option value="custom">Custom Range</option>
+        </select>
+      </div>
+      
+      <div id="customPageRangeContainer" style="display: none; margin-bottom: 10px;">
+        <label>Page Range (e.g., 1-5):</label>
+        <input type="text" id="customPageRange" class="text-input" placeholder="1-5">
+      </div>
+    </div>
+    
+    <button id="cropBtn" style="margin-top: 15px;">Crop Now</button>
+    <div class="progress-container" id="cropProgress">
+      <div class="progress-bar"></div>
+    </div>
+  </div>
+  <div id="cropFileListContainer" class="file-list-container"></div>
+</div>
+    </div>
+  </section>
+
+  <section class="about-section" id="about">
+    <div class="about-container">
+      <div class="about-text">
+        <h2>About PDFik</h2>
+        <p>PDFik is a free and easy-to-use toolkit for all your PDF needs. Our mission is to provide a fast, clean, and genuinely free service for everyone.</p>
+        <p>Merge, split, convert, rotate, lock-unlock — all in your browser without downloads.</p>
+        <p>PDFik was created by Parthapratim Swi, a young developer passionate about creating useful tools that make people's lives easier.</p>
+      </div>
+       <div class="founder-card">
+        <img src="assets/founder.jpeg" alt="Founder of PDFik" onerror="this.onerror=null;this.src='https://placehold.co/80x80/cccccc/000000?text=PS';">
+        <div class="founder-info">
+          <h3>Parthapratim Swi</h3>
+          <p>Creator of PDFik</p>
+          <p>Age: 14</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer-section" id="contact">
+    <div class="footer-container">
+        <div class="footer-left">
+            <h3>Get in Touch</h3>
+            <p>Have a question or feedback? We'd love to hear from you. Fill out the form and we'll get back to you as soon as possible.</p>
+            <div class="social-links" style="margin-top: 20px;">
+              <a href="https://www.linkedin.com/in/parthapratim-swi-449131370/" style="color: #ccc; margin-right: 15px; font-size: 1.5rem;" target="_blank"><i class="fab fa-linkedin"></i></a>
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=parthapratimswi@gmail.com" style="color: #ccc; margin-right: 15px; font-size: 1.5rem;" target="_blank"><i class="far fa-envelope"></i></a>
+              <p id="discla-crea-social">(Creator)</p>
+            </div>
+        </div>
+        <div class="footer-right">
+          <form action="#" method="post" class="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <input type="text" name="subject" placeholder="Subject" required>
+            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+          </form>
+        </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 PDFik by Parthapratim Swi. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>  <script src="script.js"></script>
+
+<!-- Add to your HTML file, just before the closing </body> tag -->
+<div id="legalModal" class="legal-modal">
+  <div class="legal-modal-content">
+    <div class="legal-modal-header">
+      <h2 id="legalModalTitle">Legal Documents</h2>
+      <span class="close-legal-modal">&times;</span>
+    </div>
+    <div class="legal-modal-body">
+      <div id="legalContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Add to your footer, inside the footer-bottom div -->
+<div class="footer-bottom">
+  <div class="legal-links">
+    <a href="#" id="privacyLink">Privacy Policy</a> | 
+    <a href="#" id="termsLink">Terms & Conditions</a>
+    <!-- Cookie consent banner will appear here if needed -->
+  </div>
+</div>
+
+</body>
+</html>
