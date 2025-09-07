@@ -1,6 +1,5 @@
 import os
 import tempfile
-import comtypes.client
 from docx import Document
 from docx.shared import Inches
 import fitz  # PyMuPDF
@@ -56,4 +55,5 @@ def convert_pdf_to_word(pdf_path, docx_path):
         
     except Exception as e:
         print(f"Error converting PDF to Word: {e}")
+
         return False
