@@ -5,3 +5,4 @@ PyMuPDF
 gTTS
 Werkzeug
 gunicorn
+pytesseract
